@@ -265,7 +265,7 @@ st.markdown(
         font-weight:bold;
         margin-top:20px;
     ">
-    🤖 AI Customer Support Chatbot
+    🤖 AI Customer Support 
     </h1>
     """,
     unsafe_allow_html=True
@@ -276,15 +276,6 @@ st.markdown(
     unsafe_allow_html=True
 )
 
-st.markdown(
-    """
-    <div class="welcome-box">
-        👋 Welcome! Ask me questions about AI, Machine Learning, internships,
-        technology, and career guidance.
-    </div>
-    """,
-    unsafe_allow_html=True
-)
 
 # ==========================================================
 # MAIN CHAT CARD

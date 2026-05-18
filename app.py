@@ -57,14 +57,23 @@ def set_background(image_file):
 # ==========================================================
 # LOAD ENVIRONMENT VARIABLES
 # ==========================================================
+# ==========================================================
+# LOAD API KEY (Works both locally and on Streamlit Cloud)
+# ==========================================================
 load_dotenv()
 
-api_key = os.getenv("GOOGLE_API_KEY")
+# First try Streamlit Secrets (for deployed app)
+api_key = st.secrets.get("GOOGLE_API_KEY", None)
 
+# If not found, try local .env file
+if not api_key:
+    api_key = os.getenv("GOOGLE_API_KEY")
+
+# If still not found, show error
 if not api_key:
     st.error(
-        "GOOGLE_API_KEY not found. Please create a .env file and add:\n\n"
-        "GOOGLE_API_KEY=your_api_key_here"
+        "GOOGLE_API_KEY not found. "
+        "Please add it to Streamlit Secrets or your local .env file."
     )
     st.stop()
 

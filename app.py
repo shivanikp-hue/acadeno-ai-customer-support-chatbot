@@ -58,24 +58,37 @@ def set_background(image_file):
 # LOAD ENVIRONMENT VARIABLES
 # ==========================================================
 # ==========================================================
-# LOAD API KEY (Works both locally and on Streamlit Cloud)
+# LOAD API KEY (Works Locally and on Streamlit Cloud)
 # ==========================================================
 load_dotenv()
 
-# First try Streamlit Secrets (for deployed app)
-api_key = st.secrets.get("GOOGLE_API_KEY", None)
+api_key = None
 
-# If not found, try local .env file
+# 1. Try to read from Streamlit Secrets (Cloud Deployment)
+try:
+    if "GOOGLE_API_KEY" in st.secrets:
+        api_key = st.secrets["GOOGLE_API_KEY"]
+except Exception:
+    # No secrets configured yet on Streamlit Cloud
+    pass
+
+# 2. If not found, try local .env file
 if not api_key:
     api_key = os.getenv("GOOGLE_API_KEY")
 
-# If still not found, show error
+# 3. If still not found, show error and stop
 if not api_key:
     st.error(
         "GOOGLE_API_KEY not found. "
         "Please add it to Streamlit Secrets or your local .env file."
     )
     st.stop()
+
+# Configure Gemini API
+genai.configure(api_key=api_key)
+
+# Load Gemini Model
+model = genai.GenerativeModel("models/gemini-2.5-flash")
 
 # Configure Gemini API
 genai.configure(api_key=api_key)
